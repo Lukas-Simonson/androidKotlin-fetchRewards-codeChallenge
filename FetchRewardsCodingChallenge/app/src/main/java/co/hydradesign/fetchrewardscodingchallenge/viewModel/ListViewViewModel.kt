@@ -13,15 +13,19 @@ import kotlinx.coroutines.launch
 
 class ListViewViewModel : ViewModel() {
 
-	// Get Data for Recycler View
+	/** Contains the RecyclerView Data. */
 	private val _itemData = MutableLiveData< List< Any? > >()
 
+	/** Interacts with _itemData to get and set data.*/
 	val itemData : LiveData< List< Any? > >
 		get() = _itemData
 
 	init { getItemData() }
 
-	fun getItemData() {
+	/**
+	 * Gets the Item Data from the ItemAPI
+	 */
+	private fun getItemData() {
 
 		viewModelScope.launch {
 
@@ -37,32 +41,42 @@ class ListViewViewModel : ViewModel() {
 		}
 	}
 
+	/**
+	 *  Filters and Sorts the given List< ListItems >.
+	 *
+	 *  @param data the list to sort.
+	 *  @return a List< Any? > containing ListItems and HeaderItems
+	 */
 	private fun filterAndSortData( data: List< ListItem > ) : List< Any? > {
 
-		val notNullData = data.filter { it.name != null }
-		val notEmptyData = notNullData.filter { it.name!!.trim() != "" }
+		// Filters the Data
+		val notNullData = data.filter { it.name != null }                   // Removes all items where the name is null
+		val notEmptyData = notNullData.filter { it.name!!.trim() != "" }    // Removes all items where the name is blank
+
+		// Sorts the Data by listID and name
 		val sortedData = notEmptyData.sortedWith( compareBy( { it.listId }, { it.name } ) )
 
 		val returnData : MutableList< Any? > = mutableListOf()
 		var lastListID : Int? = null
 
+		// Adds the Header Items into the returnData array
 		sortedData.forEach {
 
-			if ( lastListID == null ) {
-				lastListID = it.listId
-				returnData.add( HeaderItem( headerName = "${it.listId}" ) )
-				returnData.add( it )
+			when {
+				lastListID == null -> {
+					lastListID = it.listId
+					returnData.add( HeaderItem( headerName = "${it.listId}" ) )
+					returnData.add( it )
+				}
+				lastListID != it.listId -> {
+					lastListID = it.listId
+					returnData.add( HeaderItem( headerName = "${it.listId}" ) )
+					returnData.add( it )
+				}
+				else -> { returnData.add( it ) }
 			}
-			else if ( lastListID != it.listId ) {
-				lastListID = it.listId
-				returnData.add( HeaderItem( headerName = "${it.listId}" ) )
-				returnData.add( it )
-			}
-			else { returnData.add( it ) }
 		}
 
 		return returnData
 	}
-
-
 }
