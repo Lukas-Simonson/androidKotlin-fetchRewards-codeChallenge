@@ -11,7 +11,7 @@ import co.hydradesign.fetchrewardscodingchallenge.databinding.CardLayoutListItem
 import co.hydradesign.fetchrewardscodingchallenge.model.HeaderItem
 import co.hydradesign.fetchrewardscodingchallenge.model.ListItem
 
-class ItemRecyclerAdapter() : ListAdapter<Any?, RecyclerView.ViewHolder>( ItemDiffCallback() ) {
+class ItemRecyclerAdapter() : ListAdapter<Any, RecyclerView.ViewHolder>( ItemDiffCallback() ) {
 
 	// Gets the Items View Type
 	override fun getItemViewType(position: Int): Int {

@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 class ListViewViewModel : ViewModel() {
 
 	/** Contains the RecyclerView Data. */
-	private val _itemData = MutableLiveData< List< Any? > >()
+	private val _itemData = MutableLiveData< List< Any > >()
 
 	/** Interacts with _itemData to get and set data. */
-	val itemData : LiveData< List< Any? > >
+	val itemData : LiveData< List< Any > >
 		get() = _itemData
 
 	init { getItemData() }
@@ -45,7 +45,7 @@ class ListViewViewModel : ViewModel() {
 	 *  @param data the list to sort.
 	 *  @return a List< Any? > containing ListItems and HeaderItems
 	 */
-	private fun filterAndSortData( data: List< ListItem > ) : List< Any? > {
+	private fun filterAndSortData( data: List< ListItem > ) : List< Any > {
 
 		// Filters the Data
 		val notNullData = data.filter { it.name != null }                   // Removes all items where the name is null
@@ -57,7 +57,7 @@ class ListViewViewModel : ViewModel() {
 		)
 
 		// Variables used for adding Header Objects.
-		val returnData : MutableList< Any? > = mutableListOf()
+		val returnData : MutableList< Any > = mutableListOf()
 		var lastListID : Int? = null
 
 		// Adds the Header Items into the returnData array
