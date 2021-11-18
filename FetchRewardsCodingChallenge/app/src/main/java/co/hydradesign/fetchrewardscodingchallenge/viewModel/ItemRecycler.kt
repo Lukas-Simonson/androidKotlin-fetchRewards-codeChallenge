@@ -13,27 +13,28 @@ import co.hydradesign.fetchrewardscodingchallenge.model.ListItem
 
 class ItemRecyclerAdapter() : ListAdapter<Any?, RecyclerView.ViewHolder>( ItemDiffCallback() ) {
 
-	// Gets the Items View Type // Used to Trigger Ad vs Content Binding
+	// Gets the Items View Type
 	override fun getItemViewType(position: Int): Int {
 
-		// Checks if the current Item is an Ad Spot
+		// Checks what type the item is.
 		if ( getItem( position ) is ListItem ) {
 
-			// Returns the Ad Type
-			return ViewTypes.ITEM_TYPE.typeValue
+			return ViewTypes.ITEM_TYPE.typeValue    // List Item
 		}
 
-		// Returns Content Type
-		return ViewTypes.HEADER_TYPE.typeValue
+		return ViewTypes.HEADER_TYPE.typeValue      // Header Item
 	}
 
-	// Binds the Click Listener to the View holder
+	// Binds the ViewHolders
 	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+		// Selects the correct viewHolder based on the type of item given.
+			// List Item
 		if ( getItem( position ) is ListItem ) {
 			holder as ItemViewHolder
 			holder.bind( getItem( position ) as ListItem )
 		}
+			// Header Item
 		else if ( getItem( position ) is HeaderItem ) {
 			holder as GroupTitleViewHolder
 			holder.bind(getItem(position) as HeaderItem)
@@ -104,6 +105,7 @@ class ItemRecyclerAdapter() : ListAdapter<Any?, RecyclerView.ViewHolder>( ItemDi
 		}
 	}
 
+	// Selects which type of ViewHolder to return for the given view.
 	override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : RecyclerView.ViewHolder {
 
 		return when ( viewType ) {
